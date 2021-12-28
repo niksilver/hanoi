@@ -3,12 +3,49 @@
 lu = require('luaunit')
 hanoi = require('hanoi')
 
-TestOfAdding = {} -- class
+--------------------------------------------------------------------
 
-function TestOfAdding:testWithZero()
-    lu.assertEquals(0+3, 3, "zero and something")
-    lu.assertEquals(2+0, 2, "something and zero")
+TestPuzzle = {} -- class
+
+function TestPuzzle:testInit()
+    lu.assertEquals( hanoi.init(3), {{ 1,2,3 }, { 0,0,0 }, { 0,0,0 }} )
+    lu.assertEquals( hanoi.init(4), {{ 1,2,3,4 }, { 0,0,0,0 }, { 0,0,0,0 }} )
 end
+
+function TestPuzzle:___testRodToStrings()
+    lu.assertEquals( rodToStrings({ 0,1,2,3,5,6 }),
+        { "       "
+        , "   =   "
+        , "  :=:  "
+        , "  ===  "
+        , " ===== "
+        , ":=====:"
+        }
+    )
+end
+
+function TestPuzzle:testDiscToString()
+    lu.assertEquals( hanoi.discToString(0,1), " ")
+    lu.assertEquals( hanoi.discToString(1,1), "=")
+
+    lu.assertEquals( hanoi.discToString(0,2), "   ")
+    lu.assertEquals( hanoi.discToString(1,2), " = ")
+    lu.assertEquals( hanoi.discToString(2,2), ":=:")
+
+    lu.assertEquals( hanoi.discToString(0,3), "   ")
+    lu.assertEquals( hanoi.discToString(1,3), " = ")
+    lu.assertEquals( hanoi.discToString(2,3), ":=:")
+    lu.assertEquals( hanoi.discToString(3,3), "===")
+
+    lu.assertEquals( hanoi.discToString(0,4), "     ")
+    lu.assertEquals( hanoi.discToString(1,4), "  =  ")
+    lu.assertEquals( hanoi.discToString(2,4), " :=: ")
+    lu.assertEquals( hanoi.discToString(3,4), " === ")
+    lu.assertEquals( hanoi.discToString(4,4), ":===:")
+end
+
+
+--------------------------------------------------------------------
 
 TestUtils = {} -- class
 
