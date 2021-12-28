@@ -12,8 +12,8 @@ function TestPuzzle:testInit()
     lu.assertEquals( hanoi.init(4), {{ 1,2,3,4 }, { 0,0,0,0 }, { 0,0,0,0 }} )
 end
 
-function TestPuzzle:___testRodToStrings()
-    lu.assertEquals( rodToStrings({ 0,1,2,3,5,6 }),
+function TestPuzzle:testRodToStrings()
+    lu.assertEquals( hanoi.rodToStrings({ 0,1,2,3,5,6 }),
         { "       "
         , "   =   "
         , "  :=:  "
