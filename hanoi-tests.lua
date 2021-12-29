@@ -75,6 +75,12 @@ function TestPuzzle:testSolve()
 
 end
 
+function TestPuzzle:testMove(rods, src, dest)
+    lu.assertEquals( hanoi.move( {{0,1,2,3},{0,0,0,4},{0,0,0,0}}, 1, 2 ), {{0,0,2,3},{0,0,1,4},{0,0,0,0}} )
+    lu.assertEquals( hanoi.move( {{0,1,2,3},{0,0,0,4},{0,0,0,0}}, 1, 3 ), {{0,0,2,3},{0,0,0,4},{0,0,0,1}} )
+    lu.assertEquals( hanoi.move( {{0,1,2,3},{0,0,0,4},{0,0,0,0}}, 2, 3 ), {{0,1,2,3},{0,0,0,0},{0,0,0,4}} )
+end
+
 --------------------------------------------------------------------
 
 TestUtils = {} -- class
