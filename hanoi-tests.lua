@@ -44,6 +44,36 @@ function TestPuzzle:testDiscToString()
     lu.assertEquals( hanoi.discToString(4,4), ":===:")
 end
 
+function TestPuzzle:testSolve()
+    -- Solve the problem for 1 disc
+    lu.assertEquals( hanoi.solve(1),
+        { {1,3} }
+    )
+
+    -- Solve the problem for 2 discs
+    lu.assertEquals( hanoi.solve(2),
+        { {1,2}
+        , {1,3}
+        , {2,3}
+        }
+    )
+
+    -- Solve the problem for 3 discs
+    lu.assertEquals( hanoi.solve(3),
+        -- Solve 2 discs from 1 to 2
+        { {1,3}
+        , {1,2}
+        , {3,2}
+        -- Solve 1 disc from 1 to 3
+        , {1,3}
+        -- Solve 2 discs from 2 to 3
+        , {2,1}
+        , {2,3}
+        , {1,3}
+        }
+    )
+
+end
 
 --------------------------------------------------------------------
 
@@ -78,6 +108,12 @@ function TestUtils:testPrefix()
           "z  z"
         }
     )
+end
+
+function TestUtils:testConcat()
+    lu.assertEquals( hanoi.concat({4,5}, {6,7}), {4,5,6,7} )
+    lu.assertEquals( hanoi.concat({}, {6,7}), {6,7} )
+    lu.assertEquals( hanoi.concat({4,5}, {}), {4,5} )
 end
 
 os.exit( lu.LuaUnit.run() )
