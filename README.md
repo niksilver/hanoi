@@ -5,5 +5,5 @@ An exercise to try out Lua.
 To run the code with (say) 4 discs:
 
 ```lua
-hanoi = require('hanoi') ; hanoi.printSolution(6)
+hanoi = require('hanoi') ; hanoi.printSolution(4)
 ```
