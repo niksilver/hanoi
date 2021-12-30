@@ -1,12 +1,12 @@
--- First app with Lua: the towers of hanoi.
+-- First app with Lua: The Towers of P.
 
-Hanoi = {} -- class
+local P = {} -- Our package
 
 ------- Main puzzle functions --------------------------------------
 
 -- Initialise the three rods with a number of disks
 --
-function Hanoi.init(count)
+function P.init(count)
 
     rods = { {}, {}, {} }
     for i = 1, count do
@@ -20,7 +20,7 @@ end
 
 -- A string for one disc, on a rod of some max size.
 --
-function Hanoi.discToString(size, max)
+function P.discToString(size, max)
     local width = max + ((max+1)%2)
 
     if size == 0 then
@@ -45,32 +45,25 @@ end
 
 -- One rod, represented as strings.
 --
-function Hanoi.rodToStrings(rod)
+function P.rodToStrings(rod)
     local max = #rod
 
     local out = {}
     for i = 1, #rod do
-        table.insert(out, Hanoi.discToString(rod[i], max))
+        table.insert(out, P.discToString(rod[i], max))
     end
 
     -- Add the base, which will be the same size as the largest possible disc
-    local largest = Hanoi.discToString(max, max)
+    local largest = P.discToString(max, max)
     local base = string.rep("~", string.len(largest))
     table.insert(out, base)
 
     return out
 end
 
--- Solve the Towers of Hanoi problem for num discs.
--- Returns a list of moves of the form { src_rod, dest_rod }.
---
-function Hanoi.solve(num)
-    return solveWith(num, 1, 3)
-end
-
 -- Solve the Towers of Hanoi problem for num discs, going from rod src to rod dest.
 --
-function solveWith(num, src, dest)
+local function solveWith(num, src, dest)
     if num == 1 then
         return { {src, dest} }
     else
@@ -80,13 +73,20 @@ function solveWith(num, src, dest)
         local part2 = { {src,dest} }
         local part3 = solveWith(num-1, other, dest)
 
-        return Hanoi.concat( part1, Hanoi.concat( part2, part3 ))
+        return P.concat( part1, P.concat( part2, part3 ))
     end
+end
+
+-- Solve the Towers of Hanoi problem for num discs.
+-- Returns a list of moves of the form { src_rod, dest_rod }.
+--
+function P.solve(num)
+    return solveWith(num, 1, 3)
 end
 
 -- Given some rods, move the top disc from the src to the dest.
 --
-function Hanoi.move(rods, src, dest)
+function P.move(rods, src, dest)
     -- Size of the disc
     local size
 
@@ -118,15 +118,15 @@ end
 
 -- Print all the rods for some move m.
 --
-function printRods(m, rods)
+local function printRods(m, rods)
     local move = { m }
-    local rod1 = Hanoi.rodToStrings(rods[1])
-    local rod2 = Hanoi.rodToStrings(rods[2])
-    local rod3 = Hanoi.rodToStrings(rods[3])
+    local rod1 = P.rodToStrings(rods[1])
+    local rod2 = P.rodToStrings(rods[2])
+    local rod3 = P.rodToStrings(rods[3])
 
-    local rod23 = Hanoi.prefix( rod2, rod3 )
-    local rod123 = Hanoi.prefix( rod1, rod23 )
-    local move_rod123 = Hanoi.prefix( move, rod123 )
+    local rod23 = P.prefix( rod2, rod3 )
+    local rod123 = P.prefix( rod1, rod23 )
+    local move_rod123 = P.prefix( move, rod123 )
 
     for i = 1,#move_rod123 do
         print( move_rod123[i] )
@@ -135,17 +135,17 @@ end
 
 -- Print the solution for the Towers of Hanoi of size n.
 --
-function Hanoi.printSolution(n)
+function P.printSolution(n)
     -- Get the moves, as instructions
-    local moves = Hanoi.solve(n)
+    local moves = P.solve(n)
 
     -- Use the moves on some actual rods
-    local rods = Hanoi.init(n)
+    local rods = P.init(n)
     printRods(0, rods)
     print()
 
     for i = 1,#moves do
-        rods = Hanoi.move( rods, moves[i][1], moves[i][2] )
+        rods = P.move( rods, moves[i][1], moves[i][2] )
         printRods(i, rods)
         print()
     end
@@ -157,7 +157,7 @@ end
 -- It will prefix and return all and only the main strings, so
 -- extra prefixes will be ignored.
 --
-function Hanoi.prefix(pref, main)
+function P.prefix(pref, main)
 
     -- Work out how long the prefix strings should be
     local max_prefix = 0
@@ -168,7 +168,7 @@ function Hanoi.prefix(pref, main)
     -- Prefix the main strings, with the prefixes
     local out = {}
     for i = 1, #main do
-        local prefix_i = Hanoi.pad(pref[i], max_prefix)
+        local prefix_i = P.pad(pref[i], max_prefix)
         table.insert(out, prefix_i .. " " .. main[i])
     end
 
@@ -177,7 +177,7 @@ end
 
 -- Pad a string with zero or more spaces, so it's at least as long as the given length.
 --
-function Hanoi.pad(str, len) 
+function P.pad(str, len) 
     local str = str or ""
     local strlen = string.len(str)
 
@@ -186,7 +186,7 @@ end
 
 -- Concatenate two sequences and return a new sequence.
 --
-function Hanoi.concat(a, b)
+function P.concat(a, b)
     local out = {}
     local len_a = #a
 
@@ -201,4 +201,4 @@ function Hanoi.concat(a, b)
     return out
 end
 
-return Hanoi
+return P
