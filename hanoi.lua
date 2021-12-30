@@ -29,16 +29,13 @@ function Hanoi.discToString(size, max)
         return string.rep(" ", width)
     end
 
-    local has_enders
     local ender
     local ender_size
 
     if size % 2 == 0 then
-        has_enders = true
         ender = ":"
         ender_size = 1
     else
-        has_enders = false
         ender = ""
         ender_size = 0
     end
@@ -51,15 +48,17 @@ end
 -- One rod, represented as strings.
 --
 function Hanoi.rodToStrings(rod)
-    local max = 0
-    for i = 1, #rod do
-        max = math.max(max, rod[i])
-    end
+    local max = #rod
 
-    out = {}
+    local out = {}
     for i = 1, #rod do
         table.insert(out, Hanoi.discToString(rod[i], max))
     end
+
+    -- Add the base, which will be the same size as the largest possible disc
+    local largest = Hanoi.discToString(max, max)
+    local base = string.rep("~", string.len(largest))
+    table.insert(out, base)
 
     return out
 end
@@ -122,7 +121,7 @@ end
 -- Print all the rods for some move m.
 --
 function printRods(m, rods)
-    local move = { m .. " " }
+    local move = { m }
     local rod1 = Hanoi.rodToStrings(rods[1])
     local rod2 = Hanoi.rodToStrings(rods[2])
     local rod3 = Hanoi.rodToStrings(rods[3])
@@ -156,7 +155,7 @@ end
 
 ------- Utility functions ------------------------------------------
 
--- Prefix a main array of strings with another array of strings.
+-- Prefix a main array of strings with another array of strings, separated by a space.
 -- It will prefix and return all and only the main strings, so
 -- extra prefixes will be ignored.
 --
@@ -172,7 +171,7 @@ function Hanoi.prefix(pref, main)
     local out = {}
     for i = 1, #main do
         local prefix_i = Hanoi.pad(pref[i], max_prefix)
-        table.insert(out, prefix_i .. main[i])
+        table.insert(out, prefix_i .. " " .. main[i])
     end
 
     return out

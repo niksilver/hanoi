@@ -13,6 +13,28 @@ function TestPuzzle:testInit()
 end
 
 function TestPuzzle:testRodToStrings()
+    -- An odd number of spaces for discs (5)
+    lu.assertEquals( hanoi.rodToStrings({ 0,0,0,2,3 }),
+        { "     "
+        , "     "
+        , "     "
+        , " :=: "
+        , " === "
+        , "~~~~~"
+        }
+    )
+
+    -- An even number of spaces for discs (4)
+    lu.assertEquals( hanoi.rodToStrings({ 0,0,2,3 }),
+        { "     "
+        , "     "
+        , " :=: "
+        , " === "
+        , "~~~~~"
+        }
+    )
+
+    -- A range of numbers
     lu.assertEquals( hanoi.rodToStrings({ 0,1,2,3,5,6 }),
         { "       "
         , "   =   "
@@ -20,6 +42,7 @@ function TestPuzzle:testRodToStrings()
         , "  ===  "
         , " ===== "
         , ":=====:"
+        , "~~~~~~~"
         }
     )
 end
@@ -100,18 +123,18 @@ function TestUtils:testPrefix()
     local three = {"xxx", "yyy", "z"}
 
     lu.assertEquals( hanoi.prefix(one, two),
-        { "just oneapples",
-          "        pears"
+        { "just one apples",
+          "         pears"
         }
     )
     lu.assertEquals( hanoi.prefix(two, one),
-        { "applesjust one"
+        { "apples just one"
         }
     )
     lu.assertEquals( hanoi.prefix(three, three),
-        { "xxxxxx",
-          "yyyyyy",
-          "z  z"
+        { "xxx xxx",
+          "yyy yyy",
+          "z   z"
         }
     )
 end
