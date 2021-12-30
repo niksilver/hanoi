@@ -2,8 +2,6 @@
 
 Hanoi = {} -- class
 
-rods = {} -- The three rods, with disks
-
 ------- Main puzzle functions --------------------------------------
 
 -- Initialise the three rods with a number of disks
